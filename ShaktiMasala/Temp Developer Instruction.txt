@@ -1,0 +1,5 @@
+*This instruction are temporary and only for the creater of this system (Bhavesh)*
+
+
+1.Generate the Middleware to check the internet.
+2.Remove the error message from all the catch blocks

@@ -1,0 +1,5 @@
+
+
+
+
+->Apply the soft Delete Feature for all the records
