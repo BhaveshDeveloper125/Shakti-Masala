@@ -1,5 +1,9 @@
 *This instruction are temporary and only for the creater of this system (Bhavesh)*
 
 
-1.Generate the Middleware to check the internet.
-2.Remove the error message from all the catch blocks
+->Generate the Middleware to check the internet.
+->How to login immedietly when user register the data.
+->Apply the soft Delete Feature for all the records
+->create new log file to log the errors
+->Apply the laravel nightwatch
+->Remove the error message from all the catch blocks
