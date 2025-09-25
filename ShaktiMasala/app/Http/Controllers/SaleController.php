@@ -6,6 +6,7 @@ use App\Models\Customers;
 use App\Models\Products;
 use App\Models\Sale;
 use App\Models\Sales;
+use App\Models\SalesHistory;
 use Exception;
 use Illuminate\Http\Client\ResponseSequence;
 use Illuminate\Http\Request;
@@ -184,20 +185,22 @@ class SaleController extends Controller
 
 
             $previousData = Customers::find($validation['id']);
+            $previousData->partial_amount = $validation['partial_amount'];
             if ($previousData->partial_amount + $validation['partial_amount'] >= $previousData->total_price) {
                 // if the payment is fullly paid then change the payment status from partial/unpaid to paid.
                 Customers::find($validation['id'])->update(['partial_amount' => $validation['partial_amount'] + $previousData->partial_amount, 'payment_status' => 'paid']);
-
-                return response()->json(['success' => 'Payment Details are updated successfully.'], 200);
-
                 //insert the entry to the history table.
+                SalesHistory::create(array_merge(['customers_id' => $previousData->id], $previousData->toArray()));
+                return response()->json(['success' => 'Payment Details are updated successfully.'], 200);
             } else {
                 // update the amount and status if the status is pending.
                 if ($previousData->payment_status == 'pending' && $previousData->partial_amount + $validation['partial_amount'] < $previousData->total_price) {
                     Customers::find($validation['id'])->update(['partial_amount' => $validation['partial_amount'] + $previousData->partial_amount, 'payment_status' => 'partially paid']);
+                    SalesHistory::create(array_merge(['customers_id' => $previousData->id], $previousData->toArray()));
                     return response()->json(['success' => 'payment Amount is stored and status is changes'], 200);
                 } else {
                     Customers::find($validation['id'])->update(['partial_amount' => $validation['partial_amount'] + $previousData->partial_amount]);
+                    SalesHistory::create(array_merge(['customers_id' => $previousData->id], $previousData->toArray()));
                 }
                 return response()->json(['success' => 'Payment Details is updated successfully.'], 200);
                 ///insert the entry to the history table.

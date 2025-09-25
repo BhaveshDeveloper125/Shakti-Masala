@@ -4,11 +4,13 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductTypeController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\SalesHistoryController;
 use App\Http\Controllers\Usercontroller;
 use App\Http\Middleware\AdminCheck;
 use App\Http\Middleware\AuthCheckMiddleware;
 use App\Models\Products;
 use App\Models\Sale;
+use App\Models\SalesHistory;
 use Illuminate\Support\Facades\Route;
 
 
@@ -44,6 +46,9 @@ Route::group(['middleware' => AuthCheckMiddleware::class], function () {
     // Sales Management Routes
     Route::get('/partial_emi/{id}', [SaleController::class, 'PopulatingPartialPaidData']);
     Route::put('/update_unpaid', [SaleController::class, 'UpdateUnpaidCustomers']);
+
+    // Sales History Routes
+    Route::get('/history', [SalesHistoryController::class, 'GetSalesHistory']);
 
 
     Route::post('/logout', [Usercontroller::class, 'Logout']); //Logout
