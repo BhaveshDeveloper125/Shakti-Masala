@@ -1,5 +1,5 @@
-<nav class="overflow-hidden">
-    <ul id="nav" class="h-screen bg-[#113F67] w-20 hover:w-64 transition-all duration-300 ease-in-out flex flex-col shadow-xl group fixed md:relative">
+<nav class="h-screen sticky top-0">
+    <ul id="nav" class="h-screen bg-[#113F67] w-20 hover:w-64 transition-all duration-300 ease-in-out flex flex-col shadow-xl group sticky top-0 md:relative">
         <!-- Logo/Hamburger Section -->
         <li class="p-4 flex items-center justify-between border-b border-[#34699A] sticky top-0 bg-[#113F67] z-10">
             <div class="flex items-center gap-4">
@@ -41,7 +41,7 @@
                     </div>
                     <div class="flex flex-col">
                         <span class="nav_text opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-white font-medium">{{ auth()->user()->name }}</span>
-                        <span class="nav_text opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-xs text-gray-300">View Profile</span>
+                        <span class="nav_text opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-xs text-gray-300">Dashboard</span>
                     </div>
                 </a>
             </li>
@@ -51,6 +51,22 @@
                         <i class="fas fa-cash-register text-white"></i>
                     </div>
                     <span class="nav_text opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-white font-medium">Sales</span>
+                </a>
+            </li>
+            <li class="hover:bg-[#154D71] transition-colors duration-200 mx-2 rounded-lg">
+                <a href="/salesmanage" class="p-4 flex gap-4 items-center text-white">
+                    <div class="min-w-[40px] h-10 rounded-lg bg-[#3B38A0] flex items-center justify-center">
+                        <i class="fas fa-chart-line text-white"></i>
+                    </div>
+                    <span class="nav_text opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-white font-medium">Sales Management</span>
+                </a>
+            </li>
+            <li class="hover:bg-[#154D71] transition-colors duration-200 mx-2 rounded-lg">
+                <a href="/saleshistory" class="p-4 flex gap-4 items-center text-white">
+                    <div class="min-w-[40px] h-10 rounded-lg bg-[#3B38A0] flex items-center justify-center">
+                        <i class="fas fa-receipt text-white"></i>
+                    </div>
+                    <span class="nav_text opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-white font-medium">Sales History</span>
                 </a>
             </li>
             <li class="hover:bg-[#154D71] transition-colors duration-200 mx-2 rounded-lg">
@@ -99,6 +115,15 @@
                         <i class="fas fa-chart-bar text-white"></i>
                     </div>
                     <span class="nav_text opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-white font-medium">P&l statement</span>
+                </a>
+            </li>
+            </li>
+            <li class="hover:bg-[#154D71] transition-colors duration-200 mx-2 rounded-lg">
+                <a href="/set_product_type" class="p-4 flex gap-4 items-center text-white">
+                    <div class="min-w-[40px] h-10 rounded-lg bg-[#3B38A0] flex items-center justify-center">
+                        <i class="fas fa-th-large text-white"></i> <!-- Changed icon -->
+                    </div>
+                    <span class="nav_text opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-white font-medium">Product Type</span>
                 </a>
             </li>
             @endif
@@ -205,3 +230,15 @@
         }
     });
 </script>
+
+@if (session('success'))
+<script>
+    toastr.success("{{ session('success') }}");
+</script>
+@endif
+
+@if (session('error'))
+<script>
+    toastr.error("{{ session('error') }}");
+</script>
+@endif

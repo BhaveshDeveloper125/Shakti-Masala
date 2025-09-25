@@ -56,6 +56,6 @@ class Usercontroller extends Controller
     public function Logout(Request $request)
     {
         Auth::logout();
-        return redirect('/registration')->with('success', 'User Logout Successfully');
+        return redirect('/login_page')->with('success', 'User Logout Successfully');
     }
 }

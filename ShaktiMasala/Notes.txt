@@ -1,6 +1,9 @@
+color codes
 #1A2A80
 #3B38A0
 #113F67
 #34699A
 #154D71
 #001BB7
+
+->While Entering the product if the Product Types are not fetchd then the default mentioned HTML code assign wich provides the 3 Types which are packet,pouch,jar.

@@ -1,7 +1,7 @@
 *This instruction are temporary and only for the creater of this system (Bhavesh)*
 
-
-->Generate the Middleware to check the internet.
+->Email Should send to the Admin when Product Data is Updated and the data before update should also saved in another database.
+->Remove the fonts from the head tags if there are any in any page.
 ->How to login immedietly when user register the data.
 ->Apply the soft Delete Feature for all the records
 ->create new log file to log the errors
