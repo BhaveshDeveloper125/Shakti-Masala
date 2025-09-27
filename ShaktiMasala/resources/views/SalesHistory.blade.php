@@ -163,7 +163,7 @@
             </div>
 
             <!-- Pagination -->
-            <div id="pagination" class="hidden px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
+            <div id="pagination" class=" px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
                 <div class="text-sm text-gray-700">
                     Showing <span id="start-range">1</span> to <span id="end-range">10</span> of <span id="total-items">0</span> results
                 </div>
