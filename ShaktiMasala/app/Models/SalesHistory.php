@@ -19,4 +19,9 @@ class SalesHistory extends Model
         'extra_charges',
         'total_price'
     ];
+
+    public function Customers()
+    {
+        return $this->belongsTo(Customers::class);
+    }
 }

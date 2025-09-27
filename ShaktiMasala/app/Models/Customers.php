@@ -24,4 +24,9 @@ class Customers extends Model
     {
         return $this->hasMany(Sale::class, 'customer_id', 'id');
     }
+
+    public function SalesHistory()
+    {
+        return $this->hasMany(SalesHistory::class, 'customer_id', 'id');
+    }
 }

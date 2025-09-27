@@ -8,6 +8,7 @@ use App\Http\Controllers\SalesHistoryController;
 use App\Http\Controllers\Usercontroller;
 use App\Http\Middleware\AdminCheck;
 use App\Http\Middleware\AuthCheckMiddleware;
+use App\Models\Customers;
 use App\Models\Products;
 use App\Models\Sale;
 use App\Models\SalesHistory;
@@ -49,6 +50,14 @@ Route::group(['middleware' => AuthCheckMiddleware::class], function () {
 
     // Sales History Routes
     Route::get('/history', [SalesHistoryController::class, 'GetSalesHistory']);
+
+    // Billings View
+    Route::get('/bill/{id}', function ($id) {
+        // 
+        $customer = SalesHistory::find($id);
+        $sales = Sale::where('customer_id', $id)->get();
+        return view('Bills', ['customer' => $customer, 'sales' => $sales]);
+    });
 
 
     Route::post('/logout', [Usercontroller::class, 'Logout']); //Logout

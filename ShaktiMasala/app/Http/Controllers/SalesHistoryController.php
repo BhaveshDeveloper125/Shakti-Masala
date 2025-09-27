@@ -11,7 +11,7 @@ class SalesHistoryController extends Controller
     public function GetSalesHistory()
     {
         try {
-            $history = SalesHistory::paginate(20);
+            $history = SalesHistory::paginate(2);
             return response()->json(['history' => $history], 200);
         } catch (Exception $e) {
             return response()->json(['erro' => $e->getMessage()], 500);
