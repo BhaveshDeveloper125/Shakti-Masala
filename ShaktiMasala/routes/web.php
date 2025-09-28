@@ -51,13 +51,14 @@ Route::group(['middleware' => AuthCheckMiddleware::class], function () {
     // Sales History Routes
     Route::get('/history', [SalesHistoryController::class, 'GetSalesHistory']);
 
-    // Billings View
+    // Billings Routes
     Route::get('/bill/{id}', function ($id) {
         // 
         $customer = SalesHistory::find($id);
         $sales = Sale::where('customer_id', $id)->get();
         return view('Bills', ['customer' => $customer, 'sales' => $sales]);
     });
+    Route::get('/invoice/{id}', [CustomerController::class, 'GetSalesHistoryFromInvoice']);
 
 
     Route::post('/logout', [Usercontroller::class, 'Logout']); //Logout

@@ -11,7 +11,7 @@ class SalesHistoryController extends Controller
     public function GetSalesHistory()
     {
         try {
-            $history = SalesHistory::paginate(2);
+            $history = SalesHistory::where('created_at', '>=', now()->subMonths(3))->paginate(20);
             return response()->json(['history' => $history], 200);
         } catch (Exception $e) {
             return response()->json(['erro' => $e->getMessage()], 500);

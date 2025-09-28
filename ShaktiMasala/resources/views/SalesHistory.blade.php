@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sales History</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <x-cdnlinks />
     <script>
         tailwind.config = {
             theme: {
@@ -87,41 +86,37 @@
         </div>
 
         <!-- Filters and Search -->
-        <!-- <div class="bg-white rounded-xl shadow-sm p-4 mb-6">
+        <div class="bg-white rounded-xl shadow-sm p-4 mb-6">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div class="relative w-full md:w-64">
-                    <input type="text" id="search-input" placeholder="Search by invoice or customer..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <input type="number" min="0" id="search-input" placeholder="Search by invoice or customer..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
                     <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
                 </div>
 
                 <div class="flex flex-wrap gap-2">
-                    <select id="status-filter" class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                        <option value="">All Payment Status</option>
-                        <option value="Paid">Paid</option>
-                        <option value="Pending">Pending</option>
-                        <option value="Failed">Failed</option>
-                    </select>
 
-                    <select id="mode-filter" class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                        <option value="">All Payment Modes</option>
-                        <option value="Cash">Cash</option>
-                        <option value="Card">Card</option>
-                        <option value="Digital Wallet">Digital Wallet</option>
-                        <option value="Bank Transfer">Bank Transfer</option>
-                    </select>
-
-                    <input type="date" id="date-filter" class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-
-                    <button id="apply-filters" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-secondary transition-colors">
-                        <i class="fas fa-filter mr-2"></i> Apply Filters
-                    </button>
-
-                    <button id="reset-filters" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">
-                        <i class="fas fa-redo mr-2"></i> Reset
-                    </button>
                 </div>
             </div>
-        </div> -->
+        </div>
+        <div class="bg-white item-center rounded-xl shadow-sm overflow-hidden fade-in hidden">
+            <table id="search_table" class="min-w-full divide-y divide-gray-200 ">
+                <thead class="bg-primary text-white">
+                    <tr>
+                        <th class="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider">Invoice</th>
+                        <th class="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider">Customer</th>
+                        <th class="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider">Date</th>
+                        <th class="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider">Payment Mode</th>
+                        <th class="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider">Total Price</th>
+                        <th class="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="search_table_body" class="bg-white divide-y divide-gray-200">
+                </tbody>
+            </table>
+            <br><br><br><br>
+        </div>
+
 
         <!-- Stats Cards -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6" id="stats-cards">
@@ -183,6 +178,95 @@
     </div>
 
     <script>
+        // Search Starts
+        let inp = document.querySelector('#search-input');
+
+        inp.addEventListener('keydown', async (e) => {
+            if (e.key === 'Enter') {
+                const response = await fetch(`${window.location.origin}/invoice/${inp.value}`);
+                const result = await response.json();
+
+                let search_table = document.querySelector('#search_table').parentElement;
+                if (response.status == 404) {
+                    search_table.classList.remove('hidden');
+                    let div = document.createElement('div');
+                    div.className = ' p-8 text-center';
+                    div.innerHTML = `
+                        <i class="fas fa-inbox text-gray-300 text-4xl mb-4"></i>
+                        <h3 class="text-lg font-medium text-gray-700">No sales history found</h3>
+                        <p class="text-gray-500 mt-1">Try adjusting your search or filter to find what you're looking for.</p>
+                `;
+                    search_table.appendChild(div);
+                } else {
+                    populateSearchTable(result.bill);
+                }
+                console.log();
+            }
+        });
+
+        function populateSearchTable(data) {
+            let search_table = document.querySelector('#search_table').parentElement;
+            search_table.classList.remove('hidden');
+            let body = document.querySelector('#search_table_body');
+            body.innerHTML = '';
+
+            const row = document.createElement('tr');
+            row.className = 'table-row-hover fade-in';
+
+            // Format date
+            const date = new Date(data.date);
+            const formattedDate = date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+
+            // Determine status class
+            let statusClass = '';
+            if (data.payment_status === 'Paid') {
+                statusClass = 'status-paid';
+            } else if (data.payment_status === 'Pending') {
+                statusClass = 'status-pending';
+            } else {
+                statusClass = 'status-failed';
+            }
+
+            row.innerHTML = `
+        <td class="px-6 py-4 whitespace-nowrap">
+            <div class="text-sm font-medium text-primary">${data.invoice}</div>
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap">
+            <div class="text-sm font-medium text-gray-900">${data.customer_name}</div>
+            <div class="text-sm text-gray-500">${data.customer_type}</div>
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap">
+            <div class="text-sm text-gray-900">${formattedDate}</div>
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap">
+            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full payment-mode">
+                ${data.payment_mode}
+            </span>
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap">
+            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">
+                ${data.payment_status}
+            </span>
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap">
+            <div class="text-sm font-bold text-gray-900">₹${parseFloat(data.total_price).toFixed(2)}</div>
+            ${data.extra_charges > 0 ? `<div class="text-xs text-gray-500">₹${parseFloat(data.extra_charges).toFixed(2)} charges</div>` : ''}
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+            <button class="text-primary hover:text-secondary mr-3 view-details" data-invoice="${data.invoice}">
+                <a href="/bill/${data.id}" target="_blank">Bill</a>
+            </button>
+        </td>
+    `;
+
+            body.appendChild(row);
+        }
+        // Search ends
+
         // Global variables
         let currentPage = 1;
         let totalPages = 1;
@@ -198,27 +282,18 @@
             await loadSalesData();
 
             // Set up event listeners
-            document.getElementById('apply-filters').addEventListener('click', applyFilters);
-            document.getElementById('reset-filters').addEventListener('click', resetFilters);
             document.getElementById('search-input').addEventListener('keyup', function(e) {
-                if (e.key === 'Enter') {
-                    applyFilters();
-                }
+                if (e.key === 'Enter') {}
             });
 
             // Add real-time search with debounce
             let searchTimeout;
             document.getElementById('search-input').addEventListener('input', function() {
                 clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(() => {
-                    applyFilters();
-                }, 500);
+                searchTimeout = setTimeout(() => {}, 500);
             });
 
-            // Add change listeners for filter dropdowns
-            document.getElementById('status-filter').addEventListener('change', applyFilters);
-            document.getElementById('mode-filter').addEventListener('change', applyFilters);
-            document.getElementById('date-filter').addEventListener('change', applyFilters);
+
         });
 
         // Function to load sales data from API
@@ -283,18 +358,6 @@
             }
         }
 
-        // Function to apply filters
-        function applyFilters() {
-            currentFilters = {
-                search: document.getElementById('search-input').value,
-                status: document.getElementById('status-filter').value,
-                mode: document.getElementById('mode-filter').value,
-                date: document.getElementById('date-filter').value
-            };
-
-            // Reset to first page when applying new filters
-            loadSalesData(1);
-        }
 
         // Function to reset filters
         function resetFilters() {
@@ -496,7 +559,7 @@
             // Add page numbers
             for (let i = startPage; i <= endPage; i++) {
                 const pageButton = document.createElement('button');
-                pageButton.className = `px-3 py-1 rounded border ${i === currentPage ? 'bg-primary text-white border-primary' : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'}`;
+                pageButton.className = `px-3 py-1 rounded border ${i === currentPage ? 'bg-primary text-white border-primary' : 'border-gray-300 text-gray-700 hover:bg-gray-50'}`;
                 pageButton.textContent = i;
                 pageButton.addEventListener('click', () => {
                     loadSalesData(i);

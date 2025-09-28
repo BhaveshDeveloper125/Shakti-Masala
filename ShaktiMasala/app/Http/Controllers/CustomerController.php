@@ -21,4 +21,22 @@ class CustomerController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
+    public function GetSalesHistoryFromInvoice($id)
+    {
+        try {
+            if (!is_numeric($id)) {
+                return response()->json(['error' => 'ID must be a number Type'], 500);
+            }
+
+            if (Customers::where('invoice', $id)->exists()) {
+                $bill = Customers::where('invoice', $id)->first();
+                return response()->json(['bill' => $bill], 200);
+            } else {
+                return response()->json(['error' => "$id does not exists."], 404);
+            }
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 }

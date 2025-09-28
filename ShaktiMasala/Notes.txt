@@ -7,3 +7,4 @@ color codes
 #001BB7
 
 ->While Entering the product if the Product Types are not fetchd then the default mentioned HTML code assign wich provides the 3 Types which are packet,pouch,jar.
+->In the Sales History Section Only the history of the last 3 month are displayed.
