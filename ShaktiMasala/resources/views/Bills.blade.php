@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice Bill</title>
+    <x-cdnlinks />
     <style>
         /* Reset and base styles */
         * {
@@ -132,6 +133,7 @@
             font-weight: bold;
         }
 
+
         /* Print styles */
         @media print {
             body {
@@ -145,7 +147,7 @@
             }
 
             .no-print {
-                display: none;
+                display: none !important;
             }
         }
 
@@ -173,8 +175,7 @@
     </style>
 </head>
 
-<body>
-    <button class="print-button no-print" onclick="window.print()">Print Bill</button>
+<body class=" p-4">
 
     <div class="bill-container">
         <!-- Header Section -->
@@ -273,6 +274,8 @@
             <div style="margin-top: 10px;">Generated on: {{ $customer->created_at }}</div>
         </div>
     </div>
+    <button class="print-button no-print" onclick="window.print()">Print Bill</button>
+
 
     <script>
         // Function to open print preview
