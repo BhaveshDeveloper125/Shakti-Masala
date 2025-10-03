@@ -60,12 +60,15 @@ Route::group(['middleware' => AuthCheckMiddleware::class], function () {
     });
     Route::get('/invoice/{id}', [CustomerController::class, 'GetSalesHistoryFromInvoice']);
 
+    // Inventory Routes
+    Route::view('/inventory', 'Inventory');
+
+
 
     Route::post('/logout', [Usercontroller::class, 'Logout']); //Logout
     Route::post('/add_product_type', [ProductTypeController::class, 'AddProductType']);
     Route::delete('/delete_type', [ProductTypeController::class, 'DeleteProductType']);
     Route::get('/product_type', [ProductTypeController::class, 'GetProductType']);
-    Route::view('/inventory', 'Inventory');
     Route::view('/customer_details', 'CustomerDetails');
     Route::view('/product_consting', 'ProductCosting');
     Route::view('/expenses', 'Expenses');
