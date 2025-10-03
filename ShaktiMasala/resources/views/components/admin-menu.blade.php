@@ -93,14 +93,14 @@
                     <span class="nav_text opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-white font-medium">Customer Details</span>
                 </a>
             </li>
-            <li class="hover:bg-[#154D71] transition-colors duration-200 mx-2 rounded-lg">
+            <!-- <li class="hover:bg-[#154D71] transition-colors duration-200 mx-2 rounded-lg">
                 <a href="/product_consting" class="p-4 flex gap-4 items-center text-white">
                     <div class="min-w-[40px] h-10 rounded-lg bg-[#3B38A0] flex items-center justify-center">
                         <i class="fas fa-calculator text-white"></i>
                     </div>
                     <span class="nav_text opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-white font-medium">Product costing</span>
                 </a>
-            </li>
+            </li> -->
             <li class="hover:bg-[#154D71] transition-colors duration-200 mx-2 rounded-lg">
                 <a href="/expenses" class="p-4 flex gap-4 items-center text-white">
                     <div class="min-w-[40px] h-10 rounded-lg bg-[#3B38A0] flex items-center justify-center">
