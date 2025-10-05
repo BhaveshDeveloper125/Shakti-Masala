@@ -39,4 +39,19 @@ class CustomerController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
+    public function GetCustomerDetails()
+    {
+        try {
+            $customers = Customers::orderBy('created_at', 'desc')->paginate(20);
+
+            if (!$customers) {
+                return response()->json(['error' => 'oops!something went wrong while fetching the customer data.Please try again later.'], 500);
+            }
+
+            return response()->json(['customers' => $customers]);
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 }

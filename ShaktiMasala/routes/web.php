@@ -63,6 +63,9 @@ Route::group(['middleware' => AuthCheckMiddleware::class], function () {
     // Inventory Routes
     Route::view('/inventory', 'Inventory');
 
+    // Customer Detail Routes
+    Route::get('/customer_data', [CustomerController::class, 'GetCustomerDetails']);
+
 
 
     Route::post('/logout', [Usercontroller::class, 'Logout']); //Logout
