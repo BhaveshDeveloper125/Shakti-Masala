@@ -119,7 +119,6 @@
             <!-- Pagination buttons will be populated here -->
         </div>
     </div>
-
     <script>
         let BaseUrl = `${window.location.origin}/customer_data`;
         let currentSort = 'created_at';
@@ -209,6 +208,15 @@
                 const result = await response.json();
                 console.log('API Response:', result); // Debug log
 
+                // Print paginated data to console
+                console.log('=== PAGINATED DATA ===');
+                console.log('Current Page:', result.customers.current_page);
+                console.log('Total Pages:', result.customers.last_page);
+                console.log('Per Page:', result.customers.per_page);
+                console.log('Total Records:', result.customers.total);
+                console.log('Data:', result.customers.data);
+                console.log('=====================');
+
                 // Hide loading indicator
                 loading.classList.add('hidden');
 
@@ -236,10 +244,10 @@
                         let button = document.createElement('button');
                         button.innerHTML = link.label.replace('&laquo;', '«').replace('&raquo;', '»');
                         button.className = `px-4 py-2 rounded-lg border transition-colors ${
-                            link.active 
-                                ? 'bg-[#1A2A80] text-white border-[#1A2A80]' 
-                                : 'border-gray-300 text-gray-700 hover:bg-gray-50'
-                        } ${link.url === null ? 'opacity-50 cursor-not-allowed' : ''}`;
+                        link.active 
+                            ? 'bg-[#1A2A80] text-white border-[#1A2A80]' 
+                            : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+                    } ${link.url === null ? 'opacity-50 cursor-not-allowed' : ''}`;
 
                         if (link.url !== null) {
                             button.addEventListener('click', () => {
@@ -270,37 +278,37 @@
                     }
 
                     tr.innerHTML = `
-                    <td class="py-4 px-6 font-medium text-gray-900">${i.invoice || '-'}</td>
-                    <td class="py-4 px-6">
-                        <div class="flex items-center">
-                            <div class="w-8 h-8 rounded-full bg-[#1A2A80] flex items-center justify-center text-white text-sm font-medium mr-3">
-                                ${(i.customer_name || '?').charAt(0).toUpperCase()}
-                            </div>
-                            <span>${i.customer_name || 'Unknown'}</span>
+                <td class="py-4 px-6 font-medium text-gray-900">${i.invoice || '-'}</td>
+                <td class="py-4 px-6">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 rounded-full bg-[#1A2A80] flex items-center justify-center text-white text-sm font-medium mr-3">
+                            ${(i.customer_name || '?').charAt(0).toUpperCase()}
                         </div>
-                    </td>
-                    <td class="py-4 px-6">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getCustomerTypeClass(i.customer_type)}">
-                            ${i.customer_type || 'Regular'}
-                        </span>
-                    </td>
-                    <td class="py-4 px-6 text-gray-500">${formatDate(i.date) || '-'}</td>
-                    <td class="py-4 px-6">
-                        <div class="flex items-center">
-                            <i class="${getPaymentModeIcon(i.payment_mode)} mr-2 text-gray-500"></i>
-                            <span>${i.payment_mode || '-'}</span>
-                        </div>
-                    </td>
-                    <td class="py-4 px-6">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusClass}">
-                            ${i.payment_status || 'Unknown'}
-                        </span>
-                    </td>
-                    <td class="py-4 px-6 font-medium text-gray-900">${formatCurrency(i.partial_amount) || '₹0.00'}</td>
-                    <td class="py-4 px-6 text-gray-500">${formatCurrency(i.extra_charges) || '₹0.00'}</td>
-                    <td class="py-4 px-6 font-bold text-gray-900">${formatCurrency(i.total_price) || '₹0.00'}</td>
-                    <td class="py-4 px-6 text-gray-500">${formatDate(i.created_at) || '-'}</td>
-                `;
+                        <span>${i.customer_name || 'Unknown'}</span>
+                    </div>
+                </td>
+                <td class="py-4 px-6">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getCustomerTypeClass(i.customer_type)}">
+                        ${i.customer_type || 'Regular'}
+                    </span>
+                </td>
+                <td class="py-4 px-6 text-gray-500">${formatDate(i.date) || '-'}</td>
+                <td class="py-4 px-6">
+                    <div class="flex items-center">
+                        <i class="${getPaymentModeIcon(i.payment_mode)} mr-2 text-gray-500"></i>
+                        <span>${i.payment_mode || '-'}</span>
+                    </div>
+                </td>
+                <td class="py-4 px-6">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusClass}">
+                        ${i.payment_status || 'Unknown'}
+                    </span>
+                </td>
+                <td class="py-4 px-6 font-medium text-gray-900">${formatCurrency(i.partial_amount) || '₹0.00'}</td>
+                <td class="py-4 px-6 text-gray-500">${formatCurrency(i.extra_charges) || '₹0.00'}</td>
+                <td class="py-4 px-6 font-bold text-gray-900">${formatCurrency(i.total_price) || '₹0.00'}</td>
+                <td class="py-4 px-6 text-gray-500">${formatDate(i.created_at) || '-'}</td>
+            `;
                     tbody.append(tr);
                 });
 

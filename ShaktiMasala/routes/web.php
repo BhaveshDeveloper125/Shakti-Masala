@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductTypeController;
 use App\Http\Controllers\SaleController;
@@ -65,6 +66,10 @@ Route::group(['middleware' => AuthCheckMiddleware::class], function () {
 
     // Customer Detail Routes
     Route::get('/customer_data', [CustomerController::class, 'GetCustomerDetails']);
+
+    // Expenses Routes
+    Route::post('/add_expense', [ExpenseController::class, 'AddExpenses']);
+    Route::get('/expense', [ExpenseController::class, 'GetAllExpenses']);
 
 
 
