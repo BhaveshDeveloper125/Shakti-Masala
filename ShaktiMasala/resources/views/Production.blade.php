@@ -339,6 +339,7 @@
                             <th class="px-6 py-3">Batch</th>
                             <th class="px-6 py-3">MFG Date</th>
                             <th class="px-6 py-3">EXP Date</th>
+                            <th class="px-6 py-3">Add Product Costing</th>
                             <th class="px-6 py-3 text-center">Actions</th>
                         </tr>
                     </thead>
@@ -466,6 +467,9 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${i.batch}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${i.mfg_date}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${i.exp_date}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <a href="/product_costing/${i.id}" class="text-info hover:text-blue-700 mr-3">Add</a>
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
                                 <a href="/populate_product/${i.id}" class="text-info hover:text-blue-700 mr-3"><i class="fas fa-edit"></i></a>
                                 <button id="${i.id}" class="DeleteProduct text-red-500 hover:text-red-700 cursor-pointer"><i class="fas fa-trash-alt"></i></button>

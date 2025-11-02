@@ -3,6 +3,7 @@
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductCostingcontroller;
 use App\Http\Controllers\ProductTypeController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SalesHistoryController;
@@ -54,7 +55,7 @@ Route::group(['middleware' => AuthCheckMiddleware::class], function () {
 
     // Billings Routes
     Route::get('/bill/{id}', function ($id) {
-        // 
+        //
         $customer = SalesHistory::find($id);
         $sales = Sale::where('customer_id', $id)->get();
         return view('Bills', ['customer' => $customer, 'sales' => $sales]);
@@ -71,6 +72,9 @@ Route::group(['middleware' => AuthCheckMiddleware::class], function () {
     Route::post('/add_expense', [ExpenseController::class, 'AddExpenses']);
     Route::get('/expense', [ExpenseController::class, 'GetAllExpenses']);
 
+    // Product Costing Routes
+    Route::post('/add_costing', [ProductCostingcontroller::class, 'AddProductCosting']);
+    Route::get('/product_costing/{id}', [ProductCostingcontroller::class, 'GetCostingPage']);
 
 
     Route::post('/logout', [Usercontroller::class, 'Logout']); //Logout
@@ -83,4 +87,5 @@ Route::group(['middleware' => AuthCheckMiddleware::class], function () {
     Route::view('/pl_statement', 'PLStatement');
     Route::view('/set_product_type', 'ProductTypeSection');
     Route::view('/saleshistory', 'SalesHistory');
+    // Route::view('/product_costing', 'ProductCostingCreation');
 });

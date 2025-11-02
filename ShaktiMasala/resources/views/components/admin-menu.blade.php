@@ -110,11 +110,11 @@
                 </a>
             </li>
             <li class="hover:bg-[#154D71] transition-colors duration-200 mx-2 rounded-lg">
-                <a href="/pl_statement" class="p-4 flex gap-4 items-center text-white">
+                <a href="/product_costing" class="p-4 flex gap-4 items-center text-white">
                     <div class="min-w-[40px] h-10 rounded-lg bg-[#3B38A0] flex items-center justify-center">
                         <i class="fas fa-chart-bar text-white"></i>
                     </div>
-                    <span class="nav_text opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-white font-medium">P&l statement</span>
+                    <span class="nav_text opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-white font-medium">Product Costing</span>
                 </a>
             </li>
             </li>
