@@ -22,6 +22,5 @@ class AuthCheckMiddleware
         } else {
             return $next($request);
         }
-        // return $next($request);
     }
 }

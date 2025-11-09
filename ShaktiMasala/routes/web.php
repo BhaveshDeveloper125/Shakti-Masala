@@ -75,6 +75,8 @@ Route::group(['middleware' => AuthCheckMiddleware::class], function () {
     // Product Costing Routes
     Route::post('/add_costing', [ProductCostingcontroller::class, 'AddProductCosting']);
     Route::get('/product_costing/{id}', [ProductCostingcontroller::class, 'GetCostingPage']);
+    Route::get('/edit_costing/{id}', [ProductCostingcontroller::class, 'EdiProductCosting']);
+    Route::put('/update_costing', [ProductCostingcontroller::class, 'Update']);
 
 
     Route::post('/logout', [Usercontroller::class, 'Logout']); //Logout

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('product_costings', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('product_id')->unique();
             $table->float('raw_material');
             $table->float('labour');
             $table->float('other_expense')->nullable();

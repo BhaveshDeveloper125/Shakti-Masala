@@ -22,4 +22,9 @@ class Products extends Model
         'mfg_date',
         'exp_date',
     ];
+
+    public function ProductCosting()
+    {
+        return $this->hasOne(ProductCosting::class);
+    }
 }

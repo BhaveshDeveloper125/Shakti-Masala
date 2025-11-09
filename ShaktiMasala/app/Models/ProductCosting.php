@@ -19,8 +19,15 @@ class ProductCosting extends Model
 
     protected static function boot()
     {
+        parent::boot();
         static::creating(function ($model) {
-            $model->price_per_unit = $model->raw_material + $model->labour +  $model->other_expense / $model->total_unit_produced;
+            $total_cosnt = $model->raw_material + $model->labour +  $model->other_expense;
+            $model->price_per_unit = $total_cosnt / $model->total_unit_produced;
         });
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Products::class, 'product_id');
     }
 }
