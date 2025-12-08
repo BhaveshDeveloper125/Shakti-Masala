@@ -599,8 +599,6 @@
                 const response = await fetch(`${window.location.origin}/overview`);
                 const result = await response.json();
                 if (response.ok) {
-                    console.log(result);
-
                     document.querySelector('#total_product').innerText = result.totalProducts;
                     document.querySelector('#highest_stock').innerText = result.highestStock.units_per_carton + ' units';
                     document.querySelector('#highest_stock_name').innerText = result.highestStock.name;

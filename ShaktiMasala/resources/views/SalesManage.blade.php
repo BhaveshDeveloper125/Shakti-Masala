@@ -273,14 +273,26 @@
 
                     // Calculate total due amount
                     let totalDue = 0;
-                    result.pending.forEach(i => totalDue += (i.total_price - i.partial_amount));
-                    result.partially.forEach(i => totalDue += (i.total_price - i.partial_amount));
+                    result.pending.forEach(i => {
+                        const totalPrice = i.total_price ?? 0;
+                        const partialAmount = i.partial_amount ?? 0;
+                        totalDue += (totalPrice - partialAmount);
+                    });
+                    result.partially.forEach(i => {
+                        const totalPrice = i.total_price ?? 0;
+                        const partialAmount = i.partial_amount ?? 0;
+                        totalDue += (totalPrice - partialAmount);
+                    });
                     document.getElementById('total-due').textContent = `₹${totalDue.toLocaleString()}`;
 
                     // Display Partially Paid Data
                     let partials = document.querySelector('#partially_data');
                     partials.innerHTML = '';
                     result.partially.forEach(i => {
+                        const totalPrice = i.total_price ?? 0;
+                        const partialAmount = i.partial_amount ?? 0;
+                        const dueAmount = totalPrice - partialAmount;
+
                         let tr = document.createElement('tr');
                         tr.className = 'table-row-hover';
 
@@ -298,9 +310,9 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${i.date}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${i.payment_mode}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">₹${i.partial_amount.toLocaleString()}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-amber-600">₹${(i.total_price - i.partial_amount).toLocaleString()}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">₹${i.total_price.toLocaleString()}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">₹${partialAmount.toLocaleString()}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-amber-600">₹${dueAmount.toLocaleString()}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">₹${totalPrice.toLocaleString()}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <a href="partial_emi/${i.invoice}" class="text-[#1A2A80] hover:text-[#3B38A0] font-medium flex items-center">
                                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -317,6 +329,10 @@
                     let Pending = document.querySelector('#pending_data');
                     Pending.innerHTML = '';
                     result.pending.forEach(i => {
+                        const totalPrice = i.total_price ?? 0;
+                        const partialAmount = i.partial_amount ?? 0;
+                        const dueAmount = totalPrice - partialAmount;
+
                         let tr = document.createElement('tr');
                         tr.className = 'table-row-hover';
 
@@ -334,8 +350,8 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${i.date}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${i.payment_mode}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-amber-600">₹${(i.total_price - i.partial_amount).toLocaleString()}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">₹${i.total_price.toLocaleString()}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-amber-600">₹${dueAmount.toLocaleString()}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">₹${totalPrice.toLocaleString()}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <a href="partial_emi/${i.invoice}" class="text-[#1A2A80] hover:text-[#3B38A0] font-medium flex items-center">
                                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

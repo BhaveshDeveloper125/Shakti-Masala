@@ -8,10 +8,7 @@ use App\Http\Controllers\ProductTypeController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SalesHistoryController;
 use App\Http\Controllers\Usercontroller;
-use App\Http\Middleware\AdminCheck;
 use App\Http\Middleware\AuthCheckMiddleware;
-use App\Models\Customers;
-use App\Models\Products;
 use App\Models\Sale;
 use App\Models\SalesHistory;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +24,13 @@ Route::view('/login_page', 'LoginPage');   //Registration Page
 Route::post('/register', [Usercontroller::class, 'UserRegistration']); //User registration
 
 Route::group(['middleware' => AuthCheckMiddleware::class], function () {
+
+    // Dashboard Routes
+    Route::view('/dashboard', 'Dashboard');
+    Route::post('/total_sales', [SaleController::class, 'TotalSales']);
+    Route::post('/highest_selling_products', [SaleController::class, 'HighestSellingProducts']);
+    Route::get('/partial_payment_data', [CustomerController::class, 'TotalPartialData']);
+    Route::post('/total_expenses', [ExpenseController::class, 'GetExpense']);
 
     // Products Routes
     Route::view('/production', 'Production');
@@ -55,7 +59,6 @@ Route::group(['middleware' => AuthCheckMiddleware::class], function () {
 
     // Billings Routes
     Route::get('/bill/{id}', function ($id) {
-        //
         $customer = SalesHistory::find($id);
         $sales = Sale::where('customer_id', $id)->get();
         return view('Bills', ['customer' => $customer, 'sales' => $sales]);

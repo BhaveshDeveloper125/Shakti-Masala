@@ -28,3 +28,10 @@
         font-style: normal;
     }
 </style>
+<script>
+    // Toastr Settings
+    toastr.options.timeOut = 0;
+    toastr.options.extendedTimeOut = 0;
+    toastr.options.closeButton = true;
+    toastr.options.tapToDismiss = true;
+</script>

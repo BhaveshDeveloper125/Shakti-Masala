@@ -54,4 +54,15 @@ class CustomerController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
+    public function TotalPartialData()
+    {
+        try {
+            $partially = Customers::where('payment_status', 'partially paid')->sum('total_price');
+            $paid = Customers::where('payment_status', 'paid')->sum('total_price');
+            return response()->json(['partially' => $partially, 'paid' => $paid]);
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 }

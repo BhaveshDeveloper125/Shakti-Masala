@@ -114,9 +114,6 @@ class SaleController extends Controller
         try {
             $partially = Customers::with('Sale')->where('payment_status', 'partially paid')->get();
             $pending = Customers::with('Sale')->where('payment_status', 'pending')->get();
-            if (!$partially && $pending) {
-                return response()->json(['error' => 'oops, something went wrong, please try again later.'], 500);
-            }
             return response()->json(['partially' => $partially, 'pending' => $pending], 200);
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
@@ -216,6 +213,52 @@ class SaleController extends Controller
             }
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    // Dashboard APIS
+    public function TotalSales(Request $request)
+    {
+        try {
+            $validation = $request->validate([
+                'from' => 'nullable|date',
+                'to'   => 'required_with:from|date|nullable',
+            ]);
+
+            if (empty($validation['from']) && empty($validation['to'])) {
+                $TotalSales = Sale::whereMonth('created_at', Carbon::now()->month)->sum('payable_amount');
+            } else if (!empty($validation['from']) && !empty($validation['to'])) {
+                $from = Carbon::parse($validation['from'])->startOfDay();
+                $to = Carbon::parse($validation['to'])->endOfDay();
+                $TotalSales = Sale::whereBetween('created_at', [$from, $to])->sum('payable_amount');
+            }
+
+            return response()->json(['success' => $TotalSales], 200);
+        } catch (Exception $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
+
+    public function HighestSellingProducts(Request $request)
+    {
+        try {
+            $validation = $request->validate([
+                'from' => 'nullable|date',
+                'to'   => 'required_with:from|date|nullable',
+            ]);
+
+            if (empty($validation['from']) && empty($validation['to'])) {
+                $HighestSellingProducts = Sale::select('name', DB::raw('SUM(payable_amount) as total_sales'))->groupBy('name')->orderByDesc('total_sales')->limit(20)->get();
+                return response()->json(['success' => $HighestSellingProducts], 200);
+            } else if (!empty($validation['from']) && !empty($validation['to'])) {
+                $from = $request->filled('from') ? Carbon::parse($request->from)->startOfDay() : null;
+                $to   = $request->filled('to')   ? Carbon::parse($request->to)->endOfDay()     : null;
+                $HighestSellingProducts = Sale::query()->when($from, fn($q) => $q->where('created_at', '>=', $from))->when($to,   fn($q) => $q->where('created_at', '<=', $to))->select('name', DB::raw('SUM(payable_amount) as total_sales'))->groupBy('name')->orderByDesc('total_sales')->limit(20)->get();
+            }
+
+            return response()->json(['success' => $HighestSellingProducts], 200);
+        } catch (Exception $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
         }
     }
 }

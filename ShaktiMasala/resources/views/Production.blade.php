@@ -166,8 +166,10 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Product Image</label>
-                            <div class="relative border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-secondary transition-colors">
-                                <input type="file" name="image" id="image" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                            <div
+                                class="relative border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-secondary transition-colors">
+                                <input type="file" name="image" id="image"
+                                    class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
                                 <i class="fas fa-cloud-upload-alt text-3xl text-primary mb-2"></i>
                                 <p class="text-sm text-gray-600">Click to upload product image</p>
                             </div>
@@ -191,7 +193,8 @@
 
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">MRP per Unit</label>
-                            <input type="number" name="mrp" value="{{ old('mrp') }}" id="mrp" min="0"
+                            <input type="number" name="mrp" value="{{ old('mrp') }}" id="mrp"
+                                min="0"
                                 class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary form-input"
                                 placeholder="MRP per Unit" required>
                         </div>
@@ -200,14 +203,16 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Total Packet</label>
-                            <input type="number" name="total_packet" value="{{ old('total_packet') }}" id="total_packet" min="0"
+                            <input type="number" name="total_packet" value="{{ old('total_packet') }}"
+                                id="total_packet" min="0"
                                 class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary form-input"
                                 placeholder="Total Packet" required>
                         </div>
 
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Price Per Box</label>
-                            <input type="number" name="price_per_carot" value="{{ old('price_per_carot') }}" id="price_per_carot" min="0"
+                            <input type="number" name="price_per_carot" value="{{ old('price_per_carot') }}"
+                                id="price_per_carot" min="0"
                                 class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary form-input"
                                 placeholder="Price Per Box" required>
                         </div>
@@ -227,7 +232,8 @@
 
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Net Weight (in KG)</label>
-                            <input type="number" name="net_weight" value="{{ old('net_weight') }}" id="net_weight" min="0"
+                            <input type="number" name="net_weight" value="{{ old('net_weight') }}" id="net_weight"
+                                min="0"
                                 class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary form-input"
                                 placeholder="Net Weight" required>
                         </div>
@@ -236,14 +242,16 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Net Weight Per Unit</label>
-                            <input type="number" name="net_per_unit" value="{{ old('net_per_unit') }}" id="net_per_unit" min="0"
+                            <input type="number" name="net_per_unit" value="{{ old('net_per_unit') }}"
+                                id="net_per_unit" min="0"
                                 class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary form-input"
                                 placeholder="Net Weight Per Unit" required>
                         </div>
 
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Units Per Cartoon</label>
-                            <input type="number" name="units_per_carton" value="{{ old('units_per_carton') }}" id="units_per_carton" min="0"
+                            <input type="number" name="units_per_carton" value="{{ old('units_per_carton') }}"
+                                id="units_per_carton" min="0"
                                 class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary form-input"
                                 placeholder="Units Per Cartoon" required>
                         </div>
@@ -280,11 +288,11 @@
                     </div>
 
                     @if ($errors->any())
-                    <div class="mt-4 p-3 bg-red-100 border-l-4 border-red-500 text-red-700 rounded">
-                        @foreach ($errors->all() as $i)
-                        <p class="text-sm">{{ $i }}</p>
-                        @endforeach
-                    </div>
+                        <div class="mt-4 p-3 bg-red-100 border-l-4 border-red-500 text-red-700 rounded">
+                            @foreach ($errors->all() as $i)
+                                <p class="text-sm">{{ $i }}</p>
+                            @endforeach
+                        </div>
                     @endif
                 </form>
             </div>
@@ -298,7 +306,8 @@
                     <h2 class="text-xl font-semibold text-primary">Production Overview</h2>
                 </div>
 
-                <div id="overview" class="grid grid-cols-1 gap-4 p-4 mb-2 overview-scroll" style="max-height: 400px; overflow-y: auto;">
+                <div id="overview" class="grid grid-cols-1 gap-4 p-4 mb-2 overview-scroll"
+                    style="max-height: 400px; overflow-y: auto;">
                     <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-primary">
                         <p class="text-sm text-gray-600">Total Products</p>
                         <p id="total_product" class="text-2xl font-bold text-primary"></p>
@@ -482,22 +491,24 @@
                         i.addEventListener('click', async (e) => {
                             e.preventDefault();
                             let id = i.getAttribute('id');
-                            const csrfToken = document.querySelector('meta[name="meta"]').getAttribute('content');
+                            const csrfToken = document.querySelector('meta[name="meta"]')
+                                .getAttribute('content');
 
                             if (!confirm("Are you Sure You want to Delete this Product ?")) {
                                 return;
                             }
 
-                            const response = await fetch(`${window.location.origin}/ProductDelete`, {
-                                method: "DELETE",
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-Token': csrfToken
-                                },
-                                body: JSON.stringify({
-                                    id: id
-                                })
-                            });
+                            const response = await fetch(
+                                `${window.location.origin}/ProductDelete`, {
+                                    method: "DELETE",
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-Token': csrfToken
+                                    },
+                                    body: JSON.stringify({
+                                        id: id
+                                    })
+                                });
                             const result = await response.json();
                             if (response.ok) {
                                 GetProductData();
@@ -603,7 +614,8 @@
 
                             console.log(`Days until expiration: ${diffInDays}`);
 
-                            expiryElement.className = 'bg-orange-100 p-4 rounded-lg border-l-4 border-orange-500';
+                            expiryElement.className =
+                                'bg-orange-100 p-4 rounded-lg border-l-4 border-orange-500';
                             expiryElement.innerHTML = `
                                 <p class="text-sm text-orange-600 font-medium">Expires in ${diffInDays} Days</p>
                                 <p class="text-lg font-bold text-orange-600">${i.name}</p>
@@ -615,7 +627,8 @@
 
                         result.expiry.forEach(i => {
                             const expiryElement = document.createElement('div');
-                            expiryElement.className = 'bg-red-50 p-4 rounded-lg border-l-4 border-red-500';
+                            expiryElement.className =
+                                'bg-red-50 p-4 rounded-lg border-l-4 border-red-500';
                             expiryElement.innerHTML = `
                                 <p class="text-sm text-red-600 font-medium">Expired Product</p>
                                 <p class="text-lg font-bold text-red-700">${i.name}</p>
