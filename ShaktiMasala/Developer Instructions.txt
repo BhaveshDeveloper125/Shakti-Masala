@@ -1,3 +1,0 @@
-1.Currently in the system has 2 user types (user, admin), to add the another user use the migration file to alter the constrint that is applied on the role column of the table.
--> Take the reference : Migration file that add the constrint (2025_08_15_121040_add_user_role_col_in_users_table.php)
-

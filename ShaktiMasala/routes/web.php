@@ -29,6 +29,7 @@ Route::group(['middleware' => AuthCheckMiddleware::class], function () {
     Route::view('/dashboard', 'Dashboard');
     Route::post('/total_sales', [SaleController::class, 'TotalSales']);
     Route::post('/highest_selling_products', [SaleController::class, 'HighestSellingProducts']);
+    Route::post('/sales_chart_data', [SaleController::class, 'SalesChartData']);
     Route::get('/partial_payment_data', [CustomerController::class, 'TotalPartialData']);
     Route::post('/total_expenses', [ExpenseController::class, 'GetExpense']);
 

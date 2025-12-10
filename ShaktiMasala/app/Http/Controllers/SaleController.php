@@ -261,4 +261,60 @@ class SaleController extends Controller
             return response()->json(['error' => $th->getMessage()], 500);
         }
     }
+
+    public function SalesChartData(Request $request)
+    {
+        try {
+            $validation = $request->validate([
+                'from' => 'nullable|date',
+                'to'   => 'nullable|date',
+            ]);
+
+            $hasFrom = $request->filled('from');
+            $hasTo   = $request->filled('to');
+
+            // Require both dates or neither to avoid partial ranges
+            if ($hasFrom xor $hasTo) {
+                return response()->json(['error' => 'Please provide both from and to dates or leave both empty.'], 422);
+            }
+
+            $from = $hasFrom ? Carbon::parse($request->from)->startOfDay() : Carbon::now()->subDays(29)->startOfDay();
+            $to   = $hasTo   ? Carbon::parse($request->to)->endOfDay()     : Carbon::now()->endOfDay();
+
+            $salesData = Sale::whereBetween('created_at', [$from, $to])
+                ->select(DB::raw('DATE(created_at) as sale_date'), DB::raw('SUM(payable_amount) as total_sales'))
+                ->groupBy('sale_date')
+                ->orderBy('sale_date')
+                ->get();
+
+            $salesPayload = [
+                'labels' => $salesData->pluck('sale_date')->map(fn($date) => Carbon::parse($date)->format('d M'))->values(),
+                'data'   => $salesData->pluck('total_sales')->map(fn($value) => round((float) $value, 2))->values(),
+            ];
+
+            $productData = Sale::whereBetween('created_at', [$from, $to])
+                ->select('name', DB::raw('SUM(payable_amount) as total_sales'))
+                ->groupBy('name')
+                ->orderByDesc('total_sales')
+                ->limit(10)
+                ->get();
+
+            $productPayload = [
+                'labels' => $productData->pluck('name')->values(),
+                'data'   => $productData->pluck('total_sales')->map(fn($value) => round((float) $value, 2))->values(),
+            ];
+
+            return response()->json([
+                'success'  => true,
+                'sales'    => $salesPayload,
+                'products' => $productPayload,
+                'meta'     => [
+                    'from' => $from->toDateString(),
+                    'to'   => $to->toDateString(),
+                ],
+            ], 200);
+        } catch (Exception $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
 }
